@@ -1,0 +1,83 @@
+<!DOCTYPE   html>
+<html>
+  <head>
+    <title>回到顶部</title>
+  </head>
+  <style>
+    li{
+      text-align: center;
+      margin-bottom: 1rem;
+      list-style-type: none;
+    }
+  </style>
+  <body>
+  <div style="position: fixed;right: 0px;bottom: 20px;" id="backTop">
+    <img src="goToTop.png" style="width:100px;height: 100px">
+  </div>
+    <ul>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3381573685,1866477444&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3386247472,87720242&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1208538952,1443328523&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3381573685,1866477444&fm=26&gp=0.jpg" alt="" />
+      </li>
+      <li>
+        <img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3386247472,87720242&fm=26&gp=0.jpg" alt="" />
+      </li>
+    </ul>
+  </body>
+  <script>
+   var backTop = document.getElementById('backTop')
+   isShowGoToTop()
+   backTop.onclick = function () {
+     //我们要慢慢的让他往上面滚动
+     var timer = setInterval(()=>{
+       var target = 0;
+       var leader = scroll().top;
+       var step = (target - leader) / 10;
+       step = step > 0 ? Math.ceil(step) : Math.floor(step);
+       leader = leader + step;
+       window.scrollTo(0, leader);
+       if (leader <= target) {
+         clearInterval(timer);
+       }
+     },10)
+   }
+   function isShowGoToTop(){
+     backTop.style.display = scroll().top > 1000 ? 'block': 'none'
+   }
+   window.onscroll= function () {
+     isShowGoToTop()
+    }
+    //当前滚动的距离
+   function scroll() {
+     return{
+       top: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+     }
+   }
+  </script>
+</html>
