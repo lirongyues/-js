@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>轮播图</title>
+  </head>
+  <style>
+    img{
+      width: 100%;
+    }
+
+    .li_img{
+      width: 800px;
+      float: left;
+      list-style: none;
+    }
+
+    .ul_img{
+      width: 6000px;
+      padding:0px;
+      margin: 0px;
+      transition: all 2s;
+
+    }
+
+    .main_div{
+      width: 800px;
+      overflow: hidden;
+      position: relative;
+      top: 100px;
+      left: 350px;
+    }
+
+    .arrows{
+      z-index: 9999;
+      position: absolute;
+      padding-top: 230px;
+      width: 800px;
+    }
+
+    .arrows span{
+      font-size: 3em;
+      color: seashell;
+    }
+
+    .arrows span:hover {
+      /*变小手*/
+      cursor: pointer;
+      background-color: rgba(192, 192, 192, 0.29);
+    }
+
+    .div_btn{
+      float: left;
+      border-radius: 100px;
+      background-color: aquamarine;
+      width: 60px;
+      height: 10px;
+      margin-left: 10px;
+      margin-top: 100px;
+    }
+
+    .div_btn:hover{
+      background-color:aqua;
+
+    }
+  </style>
+  </head>
+  <body>
+  <div id="login_container"></div>
+  <div class="main_div">
+    <div class="arrows">
+      <span title="1" class="arrow"><</span>
+      <span title="0" class="arrow" style="float: right">></span>
+    </div>
+    <ul class="ul_img">
+      <li class="li_img"><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" /></li>
+      <li class="li_img"><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3381573685,1866477444&fm=26&gp=0.jpg" /></li>
+      <li class="li_img"><img src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3386247472,87720242&fm=26&gp=0.jpg" /></li>
+      <li class="li_img"><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1208538952,1443328523&fm=26&gp=0.jpg" /></li>
+    </ul>
+  </div>
+
+  <div style="margin-left: 600px" class="btn"></div>
+  </body>
+  <script type='text/javascript' src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+  <script>
+    var obj = new WxLogin({
+      self_redirect:true,
+      id:"login_container",
+      appid: "wxbdc5610cc59c1631",
+      scope: "snsapi_login",
+      redirect_uri: encodeURIComponent("http://"+window.location.host+"/..."),
+      state: Math.ceil(Math.random()*1000),
+      style: "black",
+      href: ""
+    });
+/*  var obj = new WxLogin({
+    self_redirect:true,
+    id:"login_container",
+    appid: 'wxe9b6642f9b68202e',
+    scope: "snsapi_login",
+    redirect_uri: encodeURIComponent("https://www.baidu.com"),
+    state: Math.ceil(Math.random()*1000),
+    style: "black",
+    href:''
+  });*/
+    //跑动的次数
+    var count = 0;
+    //动画的执行方向
+    var isgo = false;
+    //定义计时器对象
+    var  timer;
+    window.onload = function() {
+      /*获取ul元素*/
+      var ul_img = document.getElementsByClassName("ul_img")[0];
+      //获取所有的li图片元素
+      var li_img = document.getElementsByClassName("li_img");
+      //获取控制方向的箭头元素
+      var arrow = document.getElementsByClassName("arrow");
+      /*定义计时器，控制图片移动*/
+      showtime();
+      createbtn();
+      function createbtn() {
+      for(var i = 0; i < li_img.length; i++){
+          var btnObj = document.createElement('div')
+          btnObj.setAttribute('class','div_btn')
+          var btnBox = document.getElementsByClassName('btn')[0]
+          btnBox.appendChild(btnObj)
+        }
+      }
+      var div_btn = document.getElementsByClassName("div_btn");
+      div_btn[0].style.backgroundColor = "yellow";
+
+      function showtime() {
+        timer = setInterval(function () {
+          if (isgo == false) {
+            count++;
+            ul_img.style.transform = "translate(" + -800 * count + "px)";
+            if (count >= li_img.length - 1) {
+              count = li_img.length - 1;
+              isgo = true;
+            }
+          } else {
+            count--;
+            ul_img.style.transform = "translate(" + -800 * count + "px)";
+            if (count <= 0) {
+              count = 0;
+              isgo = false;
+            }
+          }
+        },4000)
+      }
+
+
+        /*鼠标进入左右方向键操作*/
+        for (var i = 0; i < arrow.length; i++) {
+          //鼠标在的时候
+          arrow[i].onmouseover = function () {
+            //停止计时器
+            clearInterval(timer);
+          }
+          //鼠标走开的时候
+          arrow[i].onmouseout = function () {
+            showtime();
+          }
+          arrow[i].onclick = function () {
+            //区分左右
+            if (this.title == 0) {
+              count++;
+              if (count > 3) {
+                count = 0;
+              }
+            }
+            else {
+              count--;
+              if (count < 0) {
+                count = 3;
+              }
+            }
+            ul_img.style.transform = "translate(" + -800 * count + "px)";
+            for (var i = 0; i < div_btn.length; i++) {
+              div_btn[i].style.backgroundColor = 'aquamarine'
+            }
+            div_btn[count].style.backgroundColor = "yellow";
+          }
+        }
+    }
+  </script>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>原生js图片懒加载插件</title>
+	</head>
+	<body>
+		<div class="index">
+		<h3 style="align-content: center;font-size: 30px;text-align: center;">向下滚动查看加载效果</h3>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3381573685,1866477444&fm=26&gp=0.jpg" src="" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3386247472,87720242&fm=26&gp=0.jpg" src="" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1208538952,1443328523&fm=26&gp=0.jpg" src="" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3386247472,87720242&fm=26&gp=0.jpg" src="" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3381573685,1866477444&fm=26&gp=0.jpg" alt="" />
+			</div>
+			<div class="index-img">
+				<img src="img/loading.gif" data-src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="" />
+			</div>
+		</div>
+	</body>
+	<script>
+		//监听滚动条事件
+		window.onscroll = function(){
+			Limg()
+		}
+		//页面加载时调用一次，使图片显示
+		window.onload = function() {
+			Limg()
+		}
+		function Limg(){
+		var viewHeight = document.documentElement.clientHeight // 可视区域的高度
+		var t = document.documentElement.scrollTop || document.body.scrollTop;
+		var limg = document.querySelectorAll("img[data-src]")
+		Array.prototype.forEach.call(limg, function(item, index) {
+			var rect
+			if(item.getAttribute("data-src") === "")
+				return
+			rect = item.getBoundingClientRect()
+			// 图片一进入可视区，动态加载
+			if(rect.bottom >= 0 && rect.top < viewHeight) {
+				(function() {
+					setTimeout(function(){
+						var img = new Image()
+						img.src = item.getAttribute("data-src")
+						item.src = img.src
+						//给图片添加过渡效果，让图片显示
+						var j = 0
+						setInterval(function() {
+							j += 0.2
+							if(j <= 1) {
+								item.style.opacity = j
+								return
+							}
+						}, 100)
+					},1000)
+				})()
+			}
+		})
+		}
+	</script>
+	<style>
+		/*给图片过渡效果*/
+		img{transition: all 0.5s;-moz-transition: all 0.5s;	/* Firefox 4 */-webkit-transition: all 0.5s;	/* Safari 和 Chrome */-o-transition: all 0.5s;	/* Opera */;}
+		.index{width: 400px;margin: 0 auto;padding-bottom: 100px;}
+		.index-img{width: 100%;height:210px;margin-top:100px;}
+		.index-img>img{width: 100%;height: 100%;object-fit: cover;}
+		*{box-sizing:content-box;}
+	</style>
+</html>
